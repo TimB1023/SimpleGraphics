@@ -1,0 +1,34 @@
+﻿<Window x:Class="RandomWalkerNS.RandomWalkerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RandomWalkerNS"
+        mc:Ignorable="d"
+        Title="Random Walkers" Height="600" Width="600" FontSize="36" WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" FontSize="18">
+            <!--<MenuItem Header="_Pick an item...">-->
+            <!--<MenuItem x:Name="menuDrawRectangle" Click="menuDrawRectangle_Click" Header="Draw _Rectangle"></MenuItem>
+                <MenuItem x:Name="menuDrawRedRectangle" Click="menuDrawRedRectangle_Click" Header="Draw Red Rectangle"></MenuItem>
+                <MenuItem x:Name="menuSetCircle" Click="menuSetCircle_Click" Header="Draw _Circle"></MenuItem>
+                <MenuItem x:Name="menuCheckerboard" Click="menuCheckerboard_Click" Header="Draw C_heckerboard"></MenuItem>
+                <MenuItem x:Name="menuFunky" Click="menuFunky_Click" Header="Draw _Funky"></MenuItem>
+                <MenuItem x:Name="menuLines" Click="menuLines_Click" Header="Draw _Lines"></MenuItem>
+                <MenuItem x:Name="menuText" Click="menuText_Click" Header="Draw _Text"></MenuItem>-->
+            <MenuItem x:Name="newWalker" Click="menuNewWalker_Click" Header="Add Walker"></MenuItem>
+            <MenuItem x:Name="clearWalkers" Click="menuClearWalkers_Click" Header="Clear Walkers"></MenuItem>
+            <TextBlock x:Name="count" Text="{Binding Path=Count}"></TextBlock>
+        </Menu>
+        <Canvas x:Name="canvas" Background="White" RenderTransformOrigin="0.5,0.5" Loaded="CanvasLoaded">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1" ScaleX="1"/>
+                    <SkewTransform AngleY="0" AngleX="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+        </Canvas>
+    </DockPanel>
+</Window>
