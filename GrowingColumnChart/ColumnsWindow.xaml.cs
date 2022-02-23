@@ -19,7 +19,7 @@ namespace GrowingColumnChart
     /// Interaction logic for ColumnsWindow.xaml
     /// </summary>
     public partial class ColumnsWindow : Window
-    {
+    {   
         public int Iteration = 0;
         public int NumberOfColumns = 10;
         public int LowerRange = 0;
@@ -27,6 +27,9 @@ namespace GrowingColumnChart
         public int StandardDeviation = 20;
         public int Baseline = 20;
         public int MyCanvasWidth = 600;
+        public int DotsLine = 500;
+        public bool Pause = false;
+
         Random rand = new Random();
         private List<Column> Columns { get; set; } = new List<Column>();
         public ColumnsWindow()
@@ -63,9 +66,13 @@ namespace GrowingColumnChart
         }
         private void Dt_Tick(object sender, EventArgs e)
         {
-            Iteration++;
-            count.Text = $"{Iteration}";
-            UpdateChart();
+            if (!Pause)
+            {
+                Iteration++;
+                count.Text = $"{Iteration}";
+                UpdateChart();
+            }
+
             
         }
 
@@ -82,7 +89,11 @@ namespace GrowingColumnChart
                     if (NewSample >= Column.BottomOfBin && NewSample <= Column.TopOfBin)
                     {
                         Column.Count++;
-                        SampleCaught = true
+                        SampleCaught = true;
+                        if (Column.Count >= DotsLine-20)
+                        {
+                            Pause = true;
+                        }
                         ;
                     }
                 }
@@ -99,7 +110,7 @@ namespace GrowingColumnChart
                 greyCircle.Opacity = 0.1;
 
                 canvas.Children.Add(greyCircle);
-                Canvas.SetBottom(greyCircle, 500);
+                Canvas.SetBottom(greyCircle, DotsLine);
                 Canvas.SetLeft(greyCircle, NewSample * MyCanvasWidth / (UpperRange-LowerRange));
             }
  
@@ -107,6 +118,7 @@ namespace GrowingColumnChart
 
         private void DisplayAllColumns()
         {
+            
             foreach (Column col in Columns)
             {
                 Rectangle greyRect = new Rectangle();
