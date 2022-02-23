@@ -1,0 +1,50 @@
+﻿<Window x:Class="GrowingColumnChart.ColumnsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GrowingColumnChart"
+        mc:Ignorable="d"
+        Title="Random Distribution" Height="600" Width="600" FontSize="36" WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="250"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel
+            Grid.Column="1" Grid.Row="0">
+            <Menu DockPanel.Dock="Top" FontSize="18"
+                  >
+                <MenuItem x:Name="startButton" Click="startButton_Click" Header="Start"></MenuItem>
+                <TextBlock Text="Iteration:"/>
+                <TextBlock x:Name="count" Text="{Binding Path=Iteration}"></TextBlock>
+                <TextBlock Text="                               RandomNumber:"/>
+                <TextBlock x:Name="RandomNumber" ></TextBlock>
+            </Menu>
+        </DockPanel>
+        <DockPanel
+            Grid.Column="1" Grid.Row="1">
+            <Canvas x:Name="canvas" Background="White" 
+                    RenderTransformOrigin="0.5,0.5" Loaded="CanvasLoaded"
+                    >
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="1" ScaleX="1"/>
+                        <SkewTransform AngleY="0" AngleX="0"/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+            </Canvas>
+        </DockPanel>
+    </Grid>
+    
+    
+   
+</Window>

@@ -67,8 +67,7 @@ namespace RandomWalkerNS
             canvas.Children.Add(blueRect);
             Canvas.SetTop(blueRect, (rw.Y + canvas.ActualHeight) % canvas.ActualHeight);
             Canvas.SetLeft(blueRect, (rw.X + canvas.ActualWidth) % canvas.ActualWidth);
-            Canvas.SetTop(blueRect, rw.Y);
-            Canvas.SetLeft(blueRect, rw.X);
+
         }
 
         private void menuStartWalkers_Click(object sender, RoutedEventArgs e)
