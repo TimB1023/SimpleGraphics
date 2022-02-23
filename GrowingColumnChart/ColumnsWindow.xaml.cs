@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Library;
 
 namespace GrowingColumnChart
 {
@@ -21,10 +22,10 @@ namespace GrowingColumnChart
     public partial class ColumnsWindow : Window
     {   
         public int Iteration = 0;
-        public int NumberOfColumns = 10;
+        public int NumberOfColumns = 30;
         public int LowerRange = 0;
         public int UpperRange = 100;
-        public int StandardDeviation = 20;
+        public int StandardDeviation = 10;
         public int Baseline = 20;
         public int MyCanvasWidth = 600;
         public int DotsLine = 500;
@@ -45,8 +46,8 @@ namespace GrowingColumnChart
             {
                 Column Column = new Column();
                 Column.Width = ColumnWidth;
-                Column.BottomOfBin = i * UpperRange / NumberOfColumns;
-                Column.TopOfBin = Column.BottomOfBin + UpperRange / NumberOfColumns - 1;
+                Column.BottomOfBin = i * (UpperRange-LowerRange) / NumberOfColumns;
+                Column.TopOfBin = Column.BottomOfBin + (UpperRange - LowerRange) / NumberOfColumns;
                 Column.BinNumber = i;
                 Columns.Add(Column);
 
@@ -81,9 +82,10 @@ namespace GrowingColumnChart
             if (Columns.Count !=0)
             {
                 //MessageBox.Show("Update");
-                double NewSample = (double)rand.Next(LowerRange, UpperRange + 1);
+                //double NewSample = (double)rand.Next(LowerRange, UpperRange + 1);
+                double NewSample = Library.GaussianGenerator.NextGaussian((UpperRange - LowerRange) / 2, StandardDeviation);
                 RandomNumber.Text = $"{NewSample}";
-                Boolean SampleCaught = false;
+                bool SampleCaught = false;
                 foreach (Column Column in Columns)
                 {
                     if (NewSample >= Column.BottomOfBin && NewSample <= Column.TopOfBin)
@@ -99,8 +101,9 @@ namespace GrowingColumnChart
                 }
                 if (!SampleCaught)
                 {
-                    //MessageBox.Show($"{NewSample} fell through the gaps");
+                    MessageBox.Show($"{NewSample} fell through the gaps");
                 }
+                
                 DisplayAllColumns();
 
                 Ellipse greyCircle = new Ellipse();
@@ -129,6 +132,7 @@ namespace GrowingColumnChart
                 greyRect.StrokeThickness = 1;
 
                 canvas.Children.Add(greyRect);
+                
                 Canvas.SetBottom(greyRect, Baseline);
                 Canvas.SetLeft(greyRect, col.BinNumber * col.Width);
                 ;
@@ -142,7 +146,7 @@ namespace GrowingColumnChart
         {
             GenerateColumns();
             DispatcherTimer dt = new DispatcherTimer();
-            dt.Interval = TimeSpan.FromMilliseconds(10);  //.FromMilliseconds(0);
+            dt.Interval = TimeSpan.FromTicks(1);  //.FromMilliseconds(0);
             dt.Tick += Dt_Tick;
             dt.Start();
         }
