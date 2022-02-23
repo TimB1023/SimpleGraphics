@@ -13,8 +13,5 @@ namespace GrowingColumnChart
         public double BottomOfBin { get; set; }
         public double TopOfBin { get; set; }
         public int BinNumber { get; set; }
-
-
-        Random rand = new Random();
     }
 }

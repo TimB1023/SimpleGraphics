@@ -33,6 +33,7 @@ namespace GrowingColumnChart
 
         Random rand = new Random();
         private List<Column> Columns { get; set; } = new List<Column>();
+        private List<Rectangle> Rectangles { get; set; } = new List<Rectangle>();
         public ColumnsWindow()
         {
             InitializeComponent();
@@ -46,14 +47,15 @@ namespace GrowingColumnChart
             {
                 Column Column = new Column();
                 Column.Width = ColumnWidth;
-                Column.BottomOfBin = i * (UpperRange-LowerRange) / NumberOfColumns;
-                Column.TopOfBin = Column.BottomOfBin + (UpperRange - LowerRange) / NumberOfColumns;
+                Column.BottomOfBin = Math.Round((double)(i * (UpperRange-LowerRange)) / NumberOfColumns,3);
+                Column.TopOfBin = Math.Round((double)(Column.BottomOfBin + (UpperRange - LowerRange) / NumberOfColumns),3);
                 Column.BinNumber = i;
                 Columns.Add(Column);
 
                 ;
                 //MessageBox.Show($"Created column {Column.BottomOfBin} to {Column.TopOfBin}");
             }
+            canvas.Width = MyCanvasWidth;
         }
 
 
@@ -84,6 +86,7 @@ namespace GrowingColumnChart
                 //MessageBox.Show("Update");
                 //double NewSample = (double)rand.Next(LowerRange, UpperRange + 1);
                 double NewSample = Library.GaussianGenerator.NextGaussian((UpperRange - LowerRange) / 2, StandardDeviation);
+                NewSample = Math.Round(NewSample, 4); //One more place for rounding so that numbers don't fall between bins
                 RandomNumber.Text = $"{NewSample}";
                 bool SampleCaught = false;
                 foreach (Column Column in Columns)
@@ -101,7 +104,8 @@ namespace GrowingColumnChart
                 }
                 if (!SampleCaught)
                 {
-                    MessageBox.Show($"{NewSample} fell through the gaps");
+                    // MessageBox.Show($"{NewSample} fell through the gaps"); //Can't seem to prevent this at the moment
+                    ;
                 }
                 
                 DisplayAllColumns();
@@ -110,7 +114,7 @@ namespace GrowingColumnChart
                 greyCircle.Fill = Brushes.Gray;
                 greyCircle.Width = 10;
                 greyCircle.Height = 10;
-                greyCircle.Opacity = 0.1;
+                greyCircle.Opacity = 0.01;
 
                 canvas.Children.Add(greyCircle);
                 Canvas.SetBottom(greyCircle, DotsLine);
@@ -121,7 +125,17 @@ namespace GrowingColumnChart
 
         private void DisplayAllColumns()
         {
-            
+            //canvas.Children.Clear();
+
+            for (int index = canvas.Children.Count - 1; index >= 0; index--)
+            {
+                if (canvas.Children[index] is Rectangle)
+                {
+                    canvas.Children.RemoveAt(index);
+                }
+
+            }
+
             foreach (Column col in Columns)
             {
                 Rectangle greyRect = new Rectangle();
@@ -137,9 +151,6 @@ namespace GrowingColumnChart
                 Canvas.SetLeft(greyRect, col.BinNumber * col.Width);
                 ;
             }
-
-
-
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)

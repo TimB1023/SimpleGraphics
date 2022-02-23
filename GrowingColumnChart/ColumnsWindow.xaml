@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GrowingColumnChart"
         mc:Ignorable="d"
-        Title="Random Distribution" Height="600" Width="600" FontSize="36" WindowStartupLocation="CenterScreen">
+        Title="Random Distribution" Height="600" Width="700" FontSize="36" WindowStartupLocation="CenterScreen">
 
-    <Grid>
+    <Grid
+        Width="{Binding Path=MyCanvasWidth}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="250"/>
+            <ColumnDefinition Width="{Binding Path=MyCanvasWidth}" MinWidth="250"/>
         </Grid.ColumnDefinitions>
 
         <DockPanel
@@ -32,6 +33,7 @@
             Grid.Column="1" Grid.Row="1">
             <Canvas x:Name="canvas" Background="White" 
                     RenderTransformOrigin="0.5,0.5" Loaded="CanvasLoaded"
+                    Width="{Binding Path=MyCanvasWidth}"
                     >
                 <Canvas.RenderTransform>
                     <TransformGroup>
