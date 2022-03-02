@@ -22,7 +22,7 @@ namespace GrowingColumnChart
     public partial class ColumnsWindow : Window
     {   
         public int Iteration = 0;
-        public int NumberOfColumns = 30;
+        public int NumberOfColumns = 60;
         public int LowerRange = 0;
         public int UpperRange = 100;
         public int StandardDeviation = 10;
@@ -75,8 +75,6 @@ namespace GrowingColumnChart
                 count.Text = $"{Iteration}";
                 UpdateChart();
             }
-
-            
         }
 
         private void UpdateChart()
