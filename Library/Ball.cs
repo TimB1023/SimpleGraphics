@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+
 
 namespace Library
 {
-    public class Ball
+    public class Ball 
     {
         public string ID { get; set; }
         public int Radius { get; set; }
@@ -15,12 +17,15 @@ namespace Library
         public double Y { get; set; }
         public double PreviousX { get; set; }
         public double PreviousY { get; set; }
-        public string Colour { get; set; }
+        
+        public byte R, G, B;
         public int Opacity { get; set; }
         public double XDelta { get; set; }
         public double YDelta { get; set; }
 
         public Random Rand = new Random();
+
+        
 
         public Ball (int canvasWidth, int canvasHeight)
         {
@@ -30,7 +35,8 @@ namespace Library
             Y = canvasHeight / 2;
             PreviousX = X;
             PreviousY = Y;
-            Colour = "";
+            Opacity = 1;
+
         }
 
         public void StartBallRandomDirection()
@@ -53,19 +59,19 @@ namespace Library
         {
             // Moves the ball in a straight line unless it hits a side
             // Simple reflection
-            if (X >= canvasWidth - Radius)
+            if (X >= canvasWidth -Radius*2) //No - radius needed as the ball is drawn from top left
             {
                 XDelta = -Math.Abs(XDelta); // Make sure it's negative
             }
-            else if ( X <= Radius)
+            else if (X <= 0)
             {
                 XDelta = Math.Abs(XDelta); // Make sure it's positive
             }
-            if (Y >= canvasHeight - Radius)
+            if (Y >= canvasHeight - Radius*2)
             {
                 YDelta = -Math.Abs(YDelta);
             }
-            else if (Y <= Radius)
+            else if (Y <= 0)
             {
                 YDelta = Math.Abs(YDelta);
             }

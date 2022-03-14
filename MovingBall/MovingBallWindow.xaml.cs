@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Library;
 using System.Windows.Threading;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace MovingBall
 {
@@ -27,15 +29,17 @@ namespace MovingBall
         public int UpperRange = 100;
         public int StandardDeviation = 60;
         public int Baseline = 5;
-        public int MyCanvasWidth = 800;
+        public int MyCanvasWidth = 790; //Just starting size, as the parameters can be changed by mouse
+        public int MyCanvasHeight = 440;
         public int MaxLine = 500;
         public int VerticalStep = 5;
         public bool Pause = false;
-        public int CurrentID = 1;
-        public List<Ball> Balls = new List<Ball>();
+        public int CurrentID = 0;
+        public ObservableCollection<Ball> Balls = new ObservableCollection<Ball>();
+        public ObservableCollection<Ellipse> BallShapes = new ObservableCollection<Ellipse>();
         public Random rand = new Random();
-        Ball newBall = new Ball(800, 450);
-        Ellipse BallShape = new Ellipse();
+        public Stopwatch Stopwatch = new Stopwatch();
+        
 
         public MovingBallWindow()
         {
@@ -46,44 +50,65 @@ namespace MovingBall
 
         public void AddBall()
         {
-            //Ball newBall = new Ball((int)canvas.ActualWidth, (int)canvas.ActualHeight); //temp moved to top
-            //newBall.ID = CurrentID;
+            Ball newBall = new Ball((int)canvas.ActualWidth, (int)canvas.ActualHeight); //temp moved to top
+            Balls.Add(newBall);
+            int ObjectIndex = Balls.IndexOf(newBall);
+            newBall.ID = ObjectIndex.ToString();  //CurrentID.ToString();
+            //CurrentID++;
             newBall.StartBallRandomDirection();
-            //Balls.Add(newBall);
-            AddBallToCanvas(newBall);
+            newBall.R = (byte)rand.Next(50, 255);
+            newBall.G = (byte)rand.Next(50, 255);
+            newBall.B = (byte)rand.Next(50, 255);
+            
+            AddBallToCanvas(newBall, newBall.ID);
+            
         }
-        public void AddBallToCanvas(Ball newBall)
+        public void AddBallToCanvas(Ball newBall, string ID)
         {
-            // Create graphics object and set parameters
-            //Ellipse BallShape = new Ellipse(); // temp moved to top
-            BallShape.Fill = Brushes.Gray;
+            //Create graphics object and set parameters
+            Ellipse BallShape = new Ellipse();
+            SolidColorBrush scb = new SolidColorBrush(Color.FromRgb(newBall.R, newBall.G, newBall.B));
+            BallShape.Fill = scb;
             BallShape.Width = 50; //newBall.Radius * 2;
             BallShape.Height = 50; //newBall.Radius * 2;
             BallShape.Opacity = newBall.Opacity;
+            BallShape.Uid = ID;
+
+            BallShapes.Add(BallShape);
+            int ObjectIndex = BallShapes.IndexOf(BallShape);
+
             // Add to canvas and display
+
             canvas.Children.Add(BallShape);
             Canvas.SetTop(BallShape, newBall.Y - newBall.Radius); //The ball is drawn from top-left, not centre
             Canvas.SetLeft(BallShape, newBall.X - newBall.Radius);
-            newBall.ID = BallShape.Uid;
+            
         }
 
         private void UpdateChart() // move and display ball
         {
-            //foreach (Ball ball in Balls)
-            //{
-            //    ball.MoveBallStraightLine((int)canvas.ActualWidth, (int)canvas.ActualHeight);
-            //    Ellipse.
-            //    canvas.SetTop(BallShape, ball.Y);
-            //    canvas.SetLeft(BallShape, ball.X);
-            //}
+            foreach (Ball ball in Balls)
+            {
+                ball.MoveBallStraightLine((int)canvas.ActualWidth, (int)canvas.ActualHeight);
+            }
 
-            newBall.MoveBallStraightLine((int)canvas.ActualWidth, (int)canvas.ActualHeight);
-            BallShape.Fill = Brushes.Gray;
-            BallShape.Width = 50; //newBall.Radius * 2;
-            BallShape.Height = 50; //newBall.Radius * 2;
-            BallShape.Opacity = 1; //newBall.Opacity;
-            Canvas.SetTop(BallShape, newBall.Y - newBall.Radius); //The ball is drawn from top-left, not centre
-            Canvas.SetLeft(BallShape, newBall.X - newBall.Radius);
+            foreach (Ellipse ballshape in BallShapes)
+            {
+                int currentIDInt = int.Parse( ballshape.Uid); // Should be the index of the ballshape
+                double thisX = (double)Balls[currentIDInt].X;
+                double thisY = (double)Balls[currentIDInt].Y;
+
+                Canvas.SetTop(ballshape, thisY );
+                Canvas.SetLeft(ballshape, thisX );
+            }
+
+            //newBall.MoveBallStraightLine((int)canvas.ActualWidth, (int)canvas.ActualHeight);
+            //BallShape.Fill = Brushes.Gray;
+            //BallShape.Width = 50; //newBall.Radius * 2;
+            //BallShape.Height = 50; //newBall.Radius * 2;
+            //BallShape.Opacity = 1; //newBall.Opacity;
+            //Canvas.SetTop(BallShape, newBall.Y - newBall.Radius); //The ball is drawn from top-left, not centre
+            //Canvas.SetLeft(BallShape, newBall.X - newBall.Radius);
 
         }
 
@@ -102,7 +127,7 @@ namespace MovingBall
         {
             AddBall();
             DispatcherTimer dt = new DispatcherTimer();
-            dt.Interval = TimeSpan.FromTicks(10000);  //.FromMilliseconds(0);
+            dt.Interval = TimeSpan.FromMilliseconds(1);
             dt.Tick += Dt_Tick;
             dt.Start();
         }

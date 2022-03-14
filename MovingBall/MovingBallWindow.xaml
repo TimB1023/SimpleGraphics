@@ -6,41 +6,34 @@
         xmlns:local="clr-namespace:MovingBall"
         mc:Ignorable="d"
         Title="MovingBallWindow" Height="450" Width="800">
-    <Grid >
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="250"/>
-        </Grid.ColumnDefinitions>
+    <DockPanel>
 
-        <DockPanel
-            Grid.Column="1" Grid.Row="0">
-            <Menu DockPanel.Dock="Top" FontSize="18"
+        <Menu DockPanel.Dock="Top" FontSize="18"
                   >
                 <MenuItem x:Name="startButton" Click="startButton_Click" Header="Start"></MenuItem>
                 <!--<MenuItem x:Name="resetButton" Click="resetButton_Click" Header="Reset"></MenuItem>-->
 
             </Menu>
-            
+            <Border>
+                <Canvas x:Name="canvas" Background="LightCoral" 
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" 
+                        Margin="0,0,0,0"
+                        Width="Auto" Height="Auto"
+                        >
+                    <!--<Canvas.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1" ScaleX="0"/>
+                            <SkewTransform AngleY="0" AngleX="0"/>
+                            <RotateTransform Angle="0"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Canvas.RenderTransform>-->
+                </Canvas>
+            </Border>
         </DockPanel>
-        <DockPanel
-            Grid.Column="1" Grid.Row="1">
-            <Canvas x:Name="canvas" Background="White" 
-                     
-                    >
-                <Canvas.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleY="1" ScaleX="1"/>
-                        <SkewTransform AngleY="0" AngleX="0"/>
-                        <RotateTransform Angle="0"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Canvas.RenderTransform>
-            </Canvas>
-        </DockPanel>
-    </Grid>
+
+
 </Window>
