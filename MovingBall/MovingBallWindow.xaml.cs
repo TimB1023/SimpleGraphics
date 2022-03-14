@@ -39,7 +39,8 @@ namespace MovingBall
         public ObservableCollection<Ellipse> BallShapes = new ObservableCollection<Ellipse>();
         public Random rand = new Random();
         public Stopwatch Stopwatch = new Stopwatch();
-        
+        public DateTimeOffset lastTime = new DateTimeOffset();
+
 
         public MovingBallWindow()
         {
@@ -56,10 +57,6 @@ namespace MovingBall
             newBall.ID = ObjectIndex.ToString();  //CurrentID.ToString();
             //CurrentID++;
             newBall.StartBallRandomDirection();
-            newBall.R = (byte)rand.Next(50, 255);
-            newBall.G = (byte)rand.Next(50, 255);
-            newBall.B = (byte)rand.Next(50, 255);
-            
             AddBallToCanvas(newBall, newBall.ID);
             
         }
@@ -68,9 +65,9 @@ namespace MovingBall
             //Create graphics object and set parameters
             Ellipse BallShape = new Ellipse();
             SolidColorBrush scb = new SolidColorBrush(Color.FromRgb(newBall.R, newBall.G, newBall.B));
+            BallShape.Width = newBall.Radius * 2;
+            BallShape.Height = newBall.Radius * 2;
             BallShape.Fill = scb;
-            BallShape.Width = 50; //newBall.Radius * 2;
-            BallShape.Height = 50; //newBall.Radius * 2;
             BallShape.Opacity = newBall.Opacity;
             BallShape.Uid = ID;
 
@@ -85,11 +82,11 @@ namespace MovingBall
             
         }
 
-        private void UpdateChart() // move and display ball
+        private void UpdateChart(TimeSpan elapsedTime) // move and display ball
         {
             foreach (Ball ball in Balls)
             {
-                ball.MoveBallStraightLine((int)canvas.ActualWidth, (int)canvas.ActualHeight);
+                ball.MoveBallStraightLine((int)canvas.ActualWidth, (int)canvas.ActualHeight, elapsedTime);
             }
 
             foreach (Ellipse ballshape in BallShapes)
@@ -117,8 +114,14 @@ namespace MovingBall
             //if (!Pause)
             //{
             //    Iteration += VerticalStep;
+            DateTimeOffset time = DateTimeOffset.Now;
+            TimeSpan elapsedTime = time - lastTime;
 
-            UpdateChart();
+            lastTime = time;
+
+            UpdateChart(elapsedTime);
+
+
             //}
             //if (Iteration == MaxLine) { Pause = true; }
         }
@@ -130,6 +133,7 @@ namespace MovingBall
             dt.Interval = TimeSpan.FromMilliseconds(1);
             dt.Tick += Dt_Tick;
             dt.Start();
+            lastTime = DateTimeOffset.Now;
         }
 
 

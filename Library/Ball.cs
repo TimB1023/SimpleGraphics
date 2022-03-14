@@ -8,6 +8,7 @@ using System.ComponentModel;
 
 namespace Library
 {
+    
     public class Ball 
     {
         public string ID { get; set; }
@@ -18,25 +19,34 @@ namespace Library
         public double PreviousX { get; set; }
         public double PreviousY { get; set; }
         
+        public double Speed { get; set; } // Pixels per second
+
         public byte R, G, B;
-        public int Opacity { get; set; }
+        public double Opacity { get; set; }
         public double XDelta { get; set; }
         public double YDelta { get; set; }
 
         public Random Rand = new Random();
 
+
+
         
 
         public Ball (int canvasWidth, int canvasHeight)
         {
-            Radius = 20;
+            Random rand = new Random();
+            Radius = rand.Next(0, 21) + 10;
             Diameter = Radius * 2;
             X = canvasWidth / 2;
             Y = canvasHeight / 2;
             PreviousX = X;
             PreviousY = Y;
-            Opacity = 1;
+            Opacity = (double)rand.Next(4, 11) / 10;
+            R = (byte)rand.Next(50, 255);
+            G = (byte)rand.Next(50, 255);
+            B = (byte)rand.Next(50, 255);
 
+            Speed = rand.Next(10,501); // Pixels per second
         }
 
         public void StartBallRandomDirection()
@@ -55,10 +65,13 @@ namespace Library
             Y = (float)(Y + YDelta);
         }
 
-        public void MoveBallStraightLine(int canvasWidth, int canvasHeight)
+        public void MoveBallStraightLine(int canvasWidth, int canvasHeight, TimeSpan elapsedTime)
         {
             // Moves the ball in a straight line unless it hits a side
             // Simple reflection
+
+            double SpeedMultiplier = elapsedTime.TotalMilliseconds * Speed / 1000; //Speed is set in pixels per second
+
             if (X >= canvasWidth -Radius*2) //No - radius needed as the ball is drawn from top left
             {
                 XDelta = -Math.Abs(XDelta); // Make sure it's negative
@@ -77,8 +90,8 @@ namespace Library
             }
             PreviousX = X;
             PreviousY = Y;
-            X = X + XDelta;
-            Y = Y + YDelta;
+            X = X + XDelta * SpeedMultiplier;
+            Y = Y + YDelta * SpeedMultiplier;
         }
 
     }

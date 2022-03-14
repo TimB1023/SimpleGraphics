@@ -12,12 +12,12 @@
 
         <Menu DockPanel.Dock="Top" FontSize="18"
                   >
-                <MenuItem x:Name="startButton" Click="startButton_Click" Header="Start"></MenuItem>
+                <MenuItem x:Name="startButton" Click="startButton_Click" Header="Add Ball"></MenuItem>
                 <!--<MenuItem x:Name="resetButton" Click="resetButton_Click" Header="Reset"></MenuItem>-->
 
             </Menu>
             <Border>
-                <Canvas x:Name="canvas" Background="LightCoral" 
+            <Canvas x:Name="canvas" Background="#eee9f8" 
                         HorizontalAlignment="Stretch" 
                         VerticalAlignment="Stretch" 
                         Margin="0,0,0,0"
