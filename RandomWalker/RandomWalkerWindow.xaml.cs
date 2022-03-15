@@ -98,9 +98,9 @@ namespace RandomWalkerNS
             ClearWalkers();
         }
 
+        // ====================================================
 
-
-        //private void MyDrawCircle ()
+        //private void MyDrawCircle()
         //{
         //    canvas.Children.Clear();
         //    Rectangle blueRect = new Rectangle();
@@ -252,6 +252,7 @@ namespace RandomWalkerNS
 
         //private void menuLines_Click(object sender, RoutedEventArgs e)
         //{
+        //    // Straight Line
         //    Line line = new Line();
         //    line.Stroke = Brushes.ForestGreen;
         //    line.StrokeThickness = 8;
@@ -262,7 +263,7 @@ namespace RandomWalkerNS
         //    canvas.Children.Add(line);
 
 
-
+        //    // Curved Line (Bézier)
         //    Path curvedLine = new Path();
         //    curvedLine.Stroke = Brushes.DeepSkyBlue;
         //    curvedLine.StrokeThickness = 2;
@@ -282,8 +283,6 @@ namespace RandomWalkerNS
         //    myGeometry.Figures = figureCollection;
         //    curvedLine.Data = myGeometry;
         //    canvas.Children.Add(curvedLine);
-
-
         //}
 
         //private void menuText_Click(object sender, RoutedEventArgs e)

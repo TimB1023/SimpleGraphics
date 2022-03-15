@@ -118,7 +118,6 @@ namespace GrowingColumnChart
                 Canvas.SetBottom(greyCircle, DotsLine);
                 Canvas.SetLeft(greyCircle, NewSample * MyCanvasWidth / (UpperRange-LowerRange));
             }
- 
         }
 
         private void DisplayAllColumns()
@@ -131,7 +130,6 @@ namespace GrowingColumnChart
                 {
                     canvas.Children.RemoveAt(index);
                 }
-
             }
 
             foreach (Column col in Columns)

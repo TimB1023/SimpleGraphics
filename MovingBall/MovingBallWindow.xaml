@@ -7,14 +7,14 @@
         mc:Ignorable="d"
         Title="MovingBallWindow" Height="450" Width="800">
 
-
     <DockPanel>
 
         <Menu DockPanel.Dock="Top" FontSize="18"
                   >
                 <MenuItem x:Name="startButton" Click="startButton_Click" Header="Add Ball"></MenuItem>
                 <!--<MenuItem x:Name="resetButton" Click="resetButton_Click" Header="Reset"></MenuItem>-->
-
+            <TextBlock Text="Count:"/>
+            <TextBlock x:Name="BallCounter"></TextBlock>
             </Menu>
             <Border>
             <Canvas x:Name="canvas" Background="#eee9f8" 
@@ -34,6 +34,4 @@
                 </Canvas>
             </Border>
         </DockPanel>
-
-
 </Window>
